@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools-scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "projectmeats3"
+version = "1.0.0"
+description = "Business management application for meat sales brokers"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "ProjectMeats Team"}
+]
+keywords = ["django", "react", "business", "meat-sales", "broker"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: Django",
+]
+
+# No dependencies at the root level - this is a full-stack application
+# Dependencies are managed separately for backend (requirements.txt) and frontend (package.json)
+dependencies = []
+
+[project.optional-dependencies]
+backend = [
+    "Django>=4.2.7",
+    "djangorestframework>=3.14.0",
+    "django-cors-headers>=4.3.1",
+    "django-environ>=0.11.2",
+    "django-filter>=23.3",
+    "psycopg[binary]>=3.2.9",
+    "dj-database-url>=2.1.0",
+    "drf-spectacular>=0.27.0",
+    "python-decouple>=3.8",
+    "Pillow>=10.2.0",
+    "psutil>=5.9.0",
+    "requests>=2.31.0",
+]
+
+dev = [
+    "django-extensions>=3.2.3",
+    "pytest-django>=4.7.0",
+    "pytest-cov>=4.1.0",
+    "factory-boy>=3.3.0",
+    "black>=23.11.0",
+    "flake8>=6.1.0",
+    "isort>=5.12.0",
+]
+
+production = [
+    "gunicorn>=21.2.0",
+    "whitenoise>=6.6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Meats-Central/ProjectMeats3"
+Repository = "https://github.com/Meats-Central/ProjectMeats3.git"
+Issues = "https://github.com/Meats-Central/ProjectMeats3/issues"
+
+[project.scripts]
+projectmeats-setup = "setup_env:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["projectmeats3*"]
+exclude = ["tests*", "frontend*", "backend*", "docs*", "config*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.md", "*.txt", "*.yaml", "*.yml"]
