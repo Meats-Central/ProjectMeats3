@@ -1,0 +1,94 @@
+# Digital Ocean App Platform Configuration for ProjectMeats3
+# Industry-standard deployment configuration for Django REST + React TypeScript
+name: projectmeats3
+
+# Database Configuration - Managed PostgreSQL
+databases:
+- engine: PG
+  name: projectmeats-db
+  num_nodes: 1
+  size: basic-xs
+  version: "15"
+
+# Backend Service - Django REST API
+services:
+- name: api
+  source_dir: /backend
+  github:
+    repo: Meats-Central/ProjectMeats3
+    branch: main
+    deploy_on_push: true
+  run_command: |
+    python manage.py migrate --noinput &&
+    python manage.py collectstatic --noinput &&
+    gunicorn --worker-tmp-dir /dev/shm --workers 2 --timeout 60 --bind 0.0.0.0:8080 projectmeats.wsgi:application
+  environment_slug: python
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  http_port: 8080
+  health_check:
+    http_path: /api/v1/health/
+  routes:
+  - path: /api
+  - path: /admin
+  - path: /static
+  envs:
+  - key: DEBUG
+    value: "False"
+    type: SECRET
+  - key: SECRET_KEY
+    type: SECRET
+  - key: ALLOWED_HOSTS
+    value: "${APP_DOMAIN},${api.PRIVATE_IP}"
+    type: SECRET
+  - key: DATABASE_URL
+    value: "${projectmeats-db.DATABASE_URL}"
+    type: SECRET
+  - key: CORS_ALLOWED_ORIGINS
+    value: "https://${web.PRIVATE_IP},https://${APP_DOMAIN}"
+    type: SECRET
+  - key: DJANGO_SETTINGS_MODULE
+    value: "projectmeats.settings.production"
+    type: SECRET
+
+# Frontend Service - React TypeScript
+- name: web
+  source_dir: /frontend
+  github:
+    repo: Meats-Central/ProjectMeats3
+    branch: main
+    deploy_on_push: true
+  build_command: |
+    npm ci --only=production &&
+    npm run build
+  run_command: npx serve -s build -l 3000
+  environment_slug: node-js
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  http_port: 3000
+  routes:
+  - path: /
+  envs:
+  - key: NODE_ENV
+    value: "production"
+    type: SECRET
+  - key: REACT_APP_API_BASE_URL
+    value: "https://${APP_DOMAIN}/api/v1"
+    type: SECRET
+
+# Static Files - Served by backend via WhiteNoise
+static_sites: []
+
+# Domain and SSL configuration
+domains:
+- domain: projectmeats.app
+  type: PRIMARY
+  zone: projectmeats.app
+  certificate_id: AUTO_GENERATED
+
+# Environment regions
+region: nyc
+
+# Features
+features:
+- buildpack-stack

@@ -33,6 +33,7 @@ whitenoise==6.6.0
 # Utilities
 python-decouple==3.8
 Pillow>=10.2.0  # For ImageField support if needed - 10.2.0+ supports Python 3.13
+psutil>=5.9.0  # For system health monitoring
 
 # HTTP requests
 requests>=2.31.0  # For GitHub API integration in bug reports
