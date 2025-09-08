@@ -4,6 +4,7 @@ Common configuration shared across all environments.
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -29,7 +30,7 @@ LOCAL_APPS = [
     "apps.core",
     "apps.accounts_receivables",
     "apps.suppliers",
-    "apps.customers", 
+    "apps.customers",
     "apps.contacts",
     "apps.purchase_orders",
     "apps.plants",
@@ -96,14 +97,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = Path(os.environ.get("STATIC_ROOT", BASE_DIR / "staticfiles"))
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
 # Media files
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = Path(os.environ.get("MEDIA_ROOT", BASE_DIR / "media"))
 
 # Static files storage - WhiteNoise for production
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
