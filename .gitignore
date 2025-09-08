@@ -99,8 +99,8 @@ wheel/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# pyenv
-.python-version
+# pyenv - but allow .python-version for deployment
+# .python-version
 
 # Celery
 celerybeat-schedule
