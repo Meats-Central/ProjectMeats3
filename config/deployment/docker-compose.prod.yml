@@ -1,0 +1,146 @@
+version: '3.8'
+
+services:
+  backend:
+    image: projectmeats/backend:latest
+    environment:
+      - ENV=production
+    env_file:
+      - ../backend/.env
+    depends_on:
+      - db
+      - redis
+    networks:
+      - projectmeats-network
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  frontend:
+    image: projectmeats/frontend:latest
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - ../frontend/.env.local
+    depends_on:
+      - backend
+    networks:
+      - projectmeats-network
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+      update_config:
+        parallelism: 2
+        delay: 10s
+        failure_action: rollback
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${PRODUCTION_DB_NAME}
+      - POSTGRES_USER=${PRODUCTION_DB_USER}
+      - POSTGRES_PASSWORD=${PRODUCTION_DB_PASSWORD}
+    networks:
+      - projectmeats-network
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - projectmeats-network
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+      restart_policy:
+        condition: on-failure
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx.production.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - projectmeats-network
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
+
+  # Monitoring
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - projectmeats-network
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 512M
+
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+    networks:
+      - projectmeats-network
+    deploy:
+      replicas: 1
+
+volumes:
+  postgres_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  projectmeats-network:
+    driver: overlay
+    attachable: true

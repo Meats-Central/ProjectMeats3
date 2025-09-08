@@ -206,11 +206,27 @@ class ProjectMeatsSetup:
             self.log(f"Backend directory not found: {self.backend_dir}", "ERROR")
             return False
         
-        # Copy environment file
-        env_source = self.backend_dir / ".env.example"
-        env_dest = self.backend_dir / ".env"
-        if not self.copy_env_file(env_source, env_dest):
-            return False
+        # Set up environment configuration using centralized system
+        config_manager = self.project_root / "config" / "manage_env.py"
+        if config_manager.exists():
+            self.log("Using centralized environment configuration...", "INFO")
+            python_cmd = "python3" if shutil.which("python3") else "python"
+            env_cmd = f"{python_cmd} {config_manager} setup development"
+            if self.run_command(env_cmd, cwd=self.project_root):
+                self.log("✓ Environment configured using centralized system", "SUCCESS")
+            else:
+                self.log("Failed to set up centralized environment, falling back to legacy", "WARNING")
+                # Fallback to legacy method
+                env_source = self.backend_dir / ".env.example"
+                env_dest = self.backend_dir / ".env"
+                if not self.copy_env_file(env_source, env_dest):
+                    return False
+        else:
+            # Legacy environment setup
+            env_source = self.backend_dir / ".env.example"
+            env_dest = self.backend_dir / ".env"
+            if not self.copy_env_file(env_source, env_dest):
+                return False
         
         # Install Python dependencies
         self.log("📦 Installing Python dependencies...", "INFO")

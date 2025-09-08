@@ -4,10 +4,10 @@
  * Main chat interface for the AI assistant.
  * Enhanced from PR #63 to integrate file upload into MessageInput and remove separate DocumentUpload component.
  */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { ChatSession, ChatMessage } from '../../types';
-import { chatApi, chatSessionsApi, documentsApi, aiUtils } from '../../services/aiService';
+import { chatApi, chatSessionsApi, documentsApi } from '../../services/aiService';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 
@@ -26,29 +26,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Load session and messages
-  useEffect(() => {
-    if (sessionId) {
-      loadSession(sessionId);
-    } else {
-      // Reset state when no session
-      setSession(null);
-      setMessages([]);
-      setError(null);
-      onSessionChange?.(null);
-    }
-  }, [sessionId, onSessionChange]);
-
-  // Auto-scroll to bottom when messages change
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const loadSession = async (id: string) => {
+  const loadSession = useCallback(async (id: string) => {
     try {
       setLoading(true);
       setError(null);
@@ -67,7 +49,25 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [onSessionChange]);
+
+  // Load session and messages
+  useEffect(() => {
+    if (sessionId) {
+      loadSession(sessionId);
+    } else {
+      // Reset state when no session
+      setSession(null);
+      setMessages([]);
+      setError(null);
+      onSessionChange?.(null);
+    }
+  }, [sessionId, loadSession, onSessionChange]);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const sendMessage = async (messageContent: string) => {
     try {

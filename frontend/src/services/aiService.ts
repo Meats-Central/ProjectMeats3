@@ -4,7 +4,7 @@
  * Handles communication with the Django REST API backend.
  * Includes fixed endpoints from PR #63.
  */
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 // API Configuration
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api/v1';
@@ -69,9 +69,11 @@ async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promi
 export interface ChatSession {
   id: string;
   title?: string;
-  session_status: string;
+  session_status: 'active' | 'completed' | 'archived';
+  context_data?: Record<string, any>;
   last_activity: string;
   created_on: string;
+  modified_on: string;
   message_count: number;
 }
 
@@ -83,6 +85,7 @@ export interface ChatMessage {
   metadata?: Record<string, any>;
   is_processed: boolean;
   created_on: string;
+  modified_on: string;
 }
 
 export interface ChatRequest {

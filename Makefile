@@ -1,7 +1,7 @@
 # ProjectMeats Development Makefile
 # Provides essential development commands for Django + React application
 
-.PHONY: help setup dev test clean docs format lint
+.PHONY: help setup dev test clean docs format lint env-dev env-staging env-prod env-validate env-secrets
 
 # Default target
 help:
@@ -18,12 +18,26 @@ help:
 	@echo "  make migrations - Create new migrations"
 	@echo "  make shell      - Open Django shell"
 	@echo ""
+	@echo "Database Commands:"
+	@echo "  make migrate    - Apply database migrations"
+	@echo "  make migrations - Create new migrations"
+	@echo "  make shell      - Open Django shell"
+	@echo ""
 	@echo "Testing & Quality:"
-	@echo "  make test       - Run all tests"
-	@echo "  make format     - Format code"
-	@echo "  make lint       - Lint code"
-	@echo "  make docs       - Generate API docs"
-	@echo "  make clean      - Clean artifacts"
+	@echo "  make test       - Run all tests (backend + frontend)"
+	@echo "  make test-backend  - Run Django tests only"
+	@echo "  make test-frontend - Run React tests only"
+	@echo "  make format     - Format code (black, isort)"
+	@echo "  make lint       - Lint code (flake8)"
+	@echo "  make docs       - Generate API documentation"
+	@echo "  make clean      - Clean build artifacts"
+	@echo ""
+	@echo "Environment Management:"
+	@echo "  make env-dev      - Set up development environment"  
+	@echo "  make env-staging  - Set up staging environment"
+	@echo "  make env-prod     - Set up production environment"
+	@echo "  make env-validate - Validate environment configuration"
+	@echo "  make env-secrets  - Generate secure secrets"
 	@echo ""
 	@echo "See README.md for complete documentation."
 
@@ -102,3 +116,24 @@ clean:
 	find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 	cd frontend && rm -rf build node_modules/.cache 2>/dev/null || true
 	@echo "✅ Cleanup complete!"
+
+# Environment management commands
+env-dev:
+	@echo "🔧 Setting up development environment..."
+	python config/manage_env.py setup development
+
+env-staging:
+	@echo "🔧 Setting up staging environment..."
+	python config/manage_env.py setup staging
+
+env-prod:
+	@echo "🔧 Setting up production environment..."
+	python config/manage_env.py setup production
+
+env-validate:
+	@echo "🔍 Validating environment configuration..."
+	python config/manage_env.py validate
+
+env-secrets:
+	@echo "🔐 Generating secure secrets..."
+	python config/manage_env.py generate-secrets

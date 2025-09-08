@@ -57,11 +57,11 @@ jobs:
 
     - name: Set up test environment
       run: |
+        # Use centralized environment configuration for CI
+        python config/manage_env.py setup development
         cd backend
-        echo "DEBUG=True" > .env
-        echo "SECRET_KEY=test-secret-key-for-ci" >> .env
+        # Override database for CI PostgreSQL
         echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/test_projectmeats" >> .env
-        echo "DJANGO_SETTINGS_MODULE=projectmeats.settings.development" >> .env
 
     - name: Run Django system checks
       run: |

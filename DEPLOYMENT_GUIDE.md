@@ -70,6 +70,31 @@ Before deployment, ensure you have:
 
 ### Step 2: Environment Configuration
 
+**🎯 RECOMMENDED: Use Centralized Environment Management**
+
+ProjectMeats3 includes a centralized environment configuration system that works seamlessly with Digital Ocean deployments:
+
+```bash
+# Quick setup for production environment
+python config/manage_env.py setup production
+
+# Generate secure secrets
+python config/manage_env.py generate-secrets
+
+# Validate configuration before deployment
+python config/manage_env.py validate
+```
+
+This system provides:
+- Pre-configured production settings optimized for Digital Ocean
+- Automated secret generation
+- Environment validation and best practices
+- Easy environment switching (dev/staging/prod)
+
+For complete documentation: `docs/ENVIRONMENT_GUIDE.md`
+
+**Alternative: Manual Configuration**
+
 1. **Backend Environment Variables**
    
    Copy `backend/.env.production.example` to your local settings and configure:

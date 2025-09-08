@@ -9,10 +9,15 @@ from .models import ChatSession, ChatMessage, AIConfiguration
 class ChatSessionAdmin(admin.ModelAdmin):
     """Admin interface for ChatSession model."""
     
-    list_display = ('title', 'owner', 'session_status', 'message_count', 'last_activity', 'created_on')
+    list_display = ('title', 'owner', 'session_status', 'get_message_count', 'last_activity', 'created_on')
     list_filter = ('session_status', 'status', 'created_on', 'last_activity')
     search_fields = ('title', 'owner__username')
     readonly_fields = ('id', 'created_on', 'modified_on', 'last_activity')
+    
+    def get_message_count(self, obj):
+        """Return the number of messages in this session."""
+        return obj.chatmessage_set.count()
+    get_message_count.short_description = 'Messages'
     
     fieldsets = (
         ('Basic Information', {

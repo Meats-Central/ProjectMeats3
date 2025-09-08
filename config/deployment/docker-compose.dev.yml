@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ../backend
+      dockerfile: Dockerfile
+    volumes:
+      - ../backend:/app
+      - /app/venv
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=development
+    env_file:
+      - ../backend/.env
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+    networks:
+      - projectmeats-network
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - ../frontend/.env.local
+    command: npm start
+    depends_on:
+      - backend
+    networks:
+      - projectmeats-network
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=projectmeats_dev
+      - POSTGRES_USER=projectmeats
+      - POSTGRES_PASSWORD=development_password
+    ports:
+      - "5432:5432"
+    networks:
+      - projectmeats-network
+
+volumes:
+  postgres_data:
+
+networks:
+  projectmeats-network:
+    driver: bridge

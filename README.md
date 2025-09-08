@@ -7,6 +7,92 @@ A business management application for meat sales brokers, migrated from PowerApp
 **Prerequisites**: Python 3.9+, Node.js 16+
 
 ```bash
+# Option 1: Automated Setup (Recommended)
+python setup.py
+
+# Option 2: Centralized Environment Configuration
+python config/manage_env.py setup development
+```
+
+The automated setup script configures everything needed including authentication, database, and AI features. For advanced environment management, use the centralized configuration system detailed below.
+
+## 🏗️ Technology Stack
+
+- **Backend**: Django 4.2.7 + Django REST Framework + PostgreSQL
+- **Frontend**: React 18.2.0 + TypeScript + Styled Components  
+- **AI Assistant**: OpenAI GPT-4 integration with modern Copilot-style interface
+- **Authentication**: Django User system with profile management
+- **API**: RESTful endpoints with OpenAPI documentation
+- **Testing**: 95+ comprehensive backend tests
+
+## 📁 Project Structure
+
+```
+ProjectMeats3/
+├── backend/                    # Django REST Framework API
+│   ├── apps/                  # Business entities (9 complete)
+│   │   ├── accounts_receivables/  # Customer payments
+│   │   ├── suppliers/            # Supplier management
+│   │   ├── customers/            # Customer relationships
+│   │   ├── purchase_orders/      # Order processing
+│   │   ├── plants/              # Processing facilities
+│   │   ├── contacts/            # Contact management
+│   │   └── core/                # Shared utilities
+│   └── requirements.txt
+├── frontend/                   # React TypeScript application
+│   ├── src/
+│   │   ├── components/         # Reusable UI components
+│   │   ├── screens/           # Main application screens
+│   │   └── services/         # API communication
+│   └── package.json
+├── docs/                      # Documentation
+└── powerapps_export/          # Original PowerApps solution
+```
+
+## 🚀 Quick Setup
+
+### Recommended Setup (Centralized Configuration)
+```bash
+# 1. Set up environment using centralized configuration
+python config/manage_env.py setup development
+
+# 2. Install dependencies  
+pip install -r backend/requirements.txt
+cd frontend && npm install && cd ..
+
+# 3. Run database migrations
+cd backend && python manage.py migrate && cd ..
+
+# 4. Start development servers
+make dev
+```
+
+### Alternative Setup (Legacy)
+```bash
+# Use the legacy setup script
+python setup.py
+```
+
+### Environment Configuration
+
+This project uses a **centralized environment configuration system** for better maintainability:
+
+- **📁 config/environments/** - Environment-specific configurations (dev/staging/prod)
+- **🔧 config/manage_env.py** - Environment management script
+- **📖 docs/ENVIRONMENT_GUIDE.md** - Complete configuration guide
+
+**Quick Commands:**
+```bash
+python config/manage_env.py setup development  # Set up dev environment
+python config/manage_env.py setup staging      # Set up staging environment  
+python config/manage_env.py setup production   # Set up production environment
+python config/manage_env.py validate           # Validate current configuration
+```
+
+**Prerequisites**: Python 3.9+, Node.js 16+, Git
+
+### Option 1: Quick Setup (Automated)
+```bash
 # 1. Clone and enter directory
 git clone https://github.com/Meats-Central/ProjectMeats3.git
 cd ProjectMeats3
@@ -17,6 +103,22 @@ python setup.py
 # 3. Start development servers
 make dev
 # Windows: run backend and frontend in separate terminals
+```
+
+### Option 2: Centralized Environment Management
+```bash
+# 1. Set up environment using centralized configuration
+python config/manage_env.py setup development
+
+# 2. Install dependencies  
+pip install -r backend/requirements.txt
+cd frontend && npm install && cd ..
+
+# 3. Run database migrations
+cd backend && python manage.py migrate && cd ..
+
+# 4. Start development servers
+make dev
 ```
 
 **Access your application:**
