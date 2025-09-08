@@ -1,7 +1,7 @@
 # ProjectMeats Development Makefile
 # Provides essential development commands for Django + React application
 
-.PHONY: help setup dev test clean docs format lint
+.PHONY: help setup dev test clean docs format lint env-dev env-staging env-prod env-validate env-secrets
 
 # Default target
 help:

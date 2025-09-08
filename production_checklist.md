@@ -2,7 +2,24 @@
 
 ## Pre-Deployment Tasks ✅
 
-### Backend Configuration
+### Environment Configuration (NEW CENTRALIZED SYSTEM)
+- [ ] **Set up environment using centralized configuration**
+  ```bash
+  # For staging
+  python config/manage_env.py setup staging
+  
+  # For production  
+  python config/manage_env.py setup production
+  ```
+- [ ] **Validate environment configuration**
+  ```bash
+  python config/manage_env.py validate
+  ```
+- [ ] **Set environment-specific secrets** (see `config/manage_env.py generate-secrets`)
+- [ ] **Review deployment guide**: `docs/DEPLOYMENT_GUIDE.md`
+- [ ] **Review environment guide**: `docs/ENVIRONMENT_GUIDE.md`
+
+### Backend Configuration (Legacy - Use Above Instead)
 - [ ] Update `SECRET_KEY` to a strong, unique value
 - [ ] Set `DEBUG=False` in production settings
 - [ ] Configure PostgreSQL database for production
@@ -14,7 +31,7 @@
 - [ ] Configure email backend for notifications
 - [ ] Set up logging and monitoring
 
-### Frontend Configuration  
+### Frontend Configuration (Legacy - Use Above Instead) 
 - [ ] Update `REACT_APP_API_BASE_URL` to production backend URL
 - [ ] Configure environment-specific variables
 - [ ] Optimize build for production (`npm run build`)
@@ -72,7 +89,36 @@ build_command: npm run build
 run_command: serve -s build
 ```
 
-### Environment Variables
+### Environment Variables (NEW CENTRALIZED SYSTEM)
+
+**Use the centralized environment configuration system:**
+
+```bash
+# Set up production environment
+python config/manage_env.py setup production
+
+# Generate secure secrets
+python config/manage_env.py generate-secrets
+
+# Validate configuration
+python config/manage_env.py validate
+```
+
+**Environment variables are now managed through:**
+- `config/environments/production.env` - Production-specific configuration
+- `config/shared/backend.env.template` - Backend template
+- `config/shared/frontend.env.template` - Frontend template
+
+**Key variables to configure:**
+- `PRODUCTION_SECRET_KEY` - Django secret key
+- `PRODUCTION_DB_*` - Database connection details  
+- `PRODUCTION_*_DOMAIN` - Domain configurations
+- `PRODUCTION_*_API_KEY` - AI service keys
+- `PRODUCTION_S3_*` - AWS S3 storage configuration
+
+For complete documentation, see: `docs/ENVIRONMENT_GUIDE.md`
+
+### Legacy Environment Variables (DEPRECATED)
 ```
 # Backend
 SECRET_KEY=your-production-secret-key
