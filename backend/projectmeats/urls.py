@@ -10,8 +10,13 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
                                    SpectacularSwaggerView)
+from .health import health_check, health_detailed, ready_check
 
 urlpatterns = [
+    # Health check endpoints
+    path("api/v1/health/", health_check, name="health-check"),
+    path("api/v1/health/detailed/", health_detailed, name="health-detailed"),
+    path("api/v1/ready/", ready_check, name="ready-check"),
     # Admin interface
     path("admin/", admin.site.urls),
     # API v1 endpoints

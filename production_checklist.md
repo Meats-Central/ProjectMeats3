@@ -1,8 +1,12 @@
 # ProjectMeats3 Production Deployment Checklist
 
+**🚀 For complete deployment guide, see [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)**
+
+This checklist focuses on the centralized environment configuration system that complements the main deployment process.
+
 ## Pre-Deployment Tasks ✅
 
-### Environment Configuration (NEW CENTRALIZED SYSTEM)
+### Environment Configuration (CENTRALIZED SYSTEM)
 - [ ] **Set up environment using centralized configuration**
   ```bash
   # For staging
@@ -16,8 +20,9 @@
   python config/manage_env.py validate
   ```
 - [ ] **Set environment-specific secrets** (see `config/manage_env.py generate-secrets`)
-- [ ] **Review deployment guide**: `docs/DEPLOYMENT_GUIDE.md`
+- [ ] **Review main deployment guide**: [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)
 - [ ] **Review environment guide**: `docs/ENVIRONMENT_GUIDE.md`
+- [ ] **Review CI/CD pipeline**: `.github/workflows/ci-cd.yml`
 
 ### Backend Configuration (Legacy - Use Above Instead)
 - [ ] Update `SECRET_KEY` to a strong, unique value

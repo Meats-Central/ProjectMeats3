@@ -1,8 +1,10 @@
-# ProjectMeats3 AI Assistant - Quick Setup Reference
+# ProjectMeats3 - Quick Setup Reference
 
-## 🔄 New Centralized Configuration System
+**🚀 For complete deployment guide, see [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)**
 
-**ProjectMeats now uses a centralized environment configuration system for better maintainability and deployment management.**
+## 🔄 Centralized Configuration System
+
+ProjectMeats uses a centralized environment configuration system that integrates with the CI/CD pipeline for better maintainability and deployment management.
 
 ### Quick Setup (Recommended)
 ```bash
