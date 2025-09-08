@@ -87,7 +87,7 @@ build_command: |
   python manage.py collectstatic --noinput
   python manage.py migrate --noinput
 
-run_command: gunicorn --worker-tmp-dir /dev/shm projectmeats.wsgi
+run_command: python -m gunicorn --worker-tmp-dir /dev/shm projectmeats.wsgi
 
 # Frontend (React/Node.js)  
 build_command: npm run build
