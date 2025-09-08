@@ -21,7 +21,7 @@ ALLOWED_HOSTS = [
 # Database Configuration - PostgreSQL via Digital Ocean managed database
 DATABASES = {
     "default": dj_database_url.config(
-        default=config("DATABASE_URL", default="sqlite:///tmp/build_temp.db"),
+        default=config("DATABASE_URL", default=f"sqlite:///{BASE_DIR}/build_temp.db"),
         conn_max_age=600,
         conn_health_checks=True,
     )
