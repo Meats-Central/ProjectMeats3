@@ -55,6 +55,11 @@ LOGGING["handlers"]["console"]["level"] = "DEBUG"
 LOGGING["loggers"]["django"]["level"] = "DEBUG"
 LOGGING["loggers"]["projectmeats"]["level"] = "DEBUG"
 
+# Remove file handler in development to avoid directory issues
+LOGGING["handlers"].pop("file", None)
+LOGGING["loggers"]["django"]["handlers"] = ["console"]
+LOGGING["loggers"]["projectmeats"]["handlers"] = ["console"]
+
 # Django Extensions (for development)
 if "django_extensions" in INSTALLED_APPS:
     INTERNAL_IPS = [
