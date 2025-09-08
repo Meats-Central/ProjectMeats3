@@ -39,6 +39,11 @@ help:
 	@echo "  make env-validate - Validate environment configuration"
 	@echo "  make env-secrets  - Generate secure secrets"
 	@echo ""
+	@echo "Deployment & Testing:"
+	@echo "  make deploy-test    - Test deployment configuration"
+	@echo "  make deploy-check   - Comprehensive deployment validation" 
+	@echo "  make health-check   - Check live application health (requires URL)"
+	@echo ""
 	@echo "See README.md for complete documentation."
 
 # Setup commands
@@ -137,3 +142,21 @@ env-validate:
 env-secrets:
 	@echo "🔐 Generating secure secrets..."
 	python config/manage_env.py generate-secrets
+
+# Deployment testing commands
+deploy-test:
+	@echo "🧪 Testing deployment configuration..."
+	python test_deployment.py --environment development --validate-only
+
+deploy-check:
+	@echo "🧪 Running comprehensive deployment validation..."
+	python test_deployment.py --environment production
+
+health-check:
+	@echo "🏥 Running health check on live application..."
+	@echo "Usage: make health-check URL=https://your-app.ondigitalocean.app"
+	@if [ -z "$(URL)" ]; then \
+		echo "❌ Please specify URL: make health-check URL=https://your-app.com"; \
+	else \
+		python health_check.py $(URL) --verbose; \
+	fi

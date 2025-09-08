@@ -184,46 +184,29 @@ cd frontend && npm install
 
 ## 🚀 Production Deployment
 
-### Quick Production Setup (Digital Ocean App Platform)
+**📖 See [USER_DEPLOYMENT_GUIDE.md](USER_DEPLOYMENT_GUIDE.md) for complete step-by-step deployment instructions**
 
-1. **Environment Variables**:
+### Quick Deploy to Digital Ocean (30 minutes)
 ```bash
-# Backend
-SECRET_KEY=your-production-secret-key
-DEBUG=False
-ALLOWED_HOSTS=your-domain.com
-DATABASE_URL=postgresql://user:pass@host:port/db
-CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
+# 1. Set up production environment
+python config/manage_env.py setup production
+python config/manage_env.py generate-secrets
 
-# Frontend  
-REACT_APP_API_BASE_URL=https://your-backend-domain.com/api/v1
+# 2. Create Digital Ocean App from app.yaml
+# 3. Configure environment variables  
+# 4. Deploy and test
 ```
 
-2. **Build Commands**:
-```yaml
-# Backend
-build_command: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate --noinput
-run_command: gunicorn --worker-tmp-dir /dev/shm projectmeats.wsgi
+**That's it!** The USER_DEPLOYMENT_GUIDE walks you through each step with a simple checklist format.
 
-# Frontend
-build_command: npm run build
-run_command: serve -s build
+### Deployment Testing
+```bash
+# Test your deployment configuration
+python test_deployment.py --environment production
+
+# Run comprehensive deployment validation
+python test_deployment.py --environment production --full-test
 ```
-
-3. **Essential Production Tasks**:
-- [ ] Update SECRET_KEY and set DEBUG=False
-- [ ] Configure PostgreSQL database
-- [ ] Set up SSL/HTTPS certificates
-- [ ] Configure environment variables
-- [ ] Test all functionality
-- [ ] Set up monitoring and backups
-
-### Performance Optimizations
-- Database indexes on key fields
-- Query optimization with select_related()
-- Static file compression and CDN
-- Frontend code splitting and caching
-- Background task processing for AI features
 
 ## 📋 Business Entities (Migration Status)
 
