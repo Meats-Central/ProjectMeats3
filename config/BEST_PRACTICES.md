@@ -39,7 +39,8 @@ ProjectMeats3/
 │   └── manage_env.py        # Environment management script
 ├── docs/                     # ✅ Documentation
 │   ├── ENVIRONMENT_GUIDE.md # Complete environment guide
-│   └── DEPLOYMENT_GUIDE.md  # Deployment documentation
+│   └── legacy/              # Archived deployment docs
+├── USER_DEPLOYMENT_GUIDE.md  # ✅ Main deployment guide (30-min)
 ├── backend/                  # Django application
 ├── frontend/                 # React application
 └── scripts/                  # Utility scripts (future)

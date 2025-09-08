@@ -1,7 +1,7 @@
 # ProjectMeats Development Makefile
 # Provides essential development commands for Django + React application
 
-.PHONY: help setup dev test clean docs format lint env-dev env-staging env-prod env-validate env-secrets
+.PHONY: help setup dev test clean docs format lint env-dev env-staging env-prod env-validate env-secrets deploy-test deploy-check health-check deploy-simulate
 
 # Default target
 help:
@@ -38,6 +38,12 @@ help:
 	@echo "  make env-prod     - Set up production environment"
 	@echo "  make env-validate - Validate environment configuration"
 	@echo "  make env-secrets  - Generate secure secrets"
+	@echo ""
+	@echo "Deployment & Testing:"
+	@echo "  make deploy-test    - Test deployment configuration"
+	@echo "  make deploy-check   - Comprehensive deployment validation" 
+	@echo "  make deploy-simulate- Simulate full deployment process"
+	@echo "  make health-check   - Check live application health (requires URL)"
 	@echo ""
 	@echo "See README.md for complete documentation."
 
@@ -137,3 +143,25 @@ env-validate:
 env-secrets:
 	@echo "🔐 Generating secure secrets..."
 	python config/manage_env.py generate-secrets
+
+# Deployment testing commands
+deploy-test:
+	@echo "🧪 Testing deployment configuration..."
+	python test_deployment.py --environment development --validate-only
+
+deploy-check:
+	@echo "🧪 Running comprehensive deployment validation..."
+	python test_deployment.py --environment production
+
+health-check:
+	@echo "🏥 Running health check on live application..."
+	@echo "Usage: make health-check URL=https://your-app.ondigitalocean.app"
+	@if [ -z "$(URL)" ]; then \
+		echo "❌ Please specify URL: make health-check URL=https://your-app.com"; \
+	else \
+		python health_check.py $(URL) --verbose; \
+	fi
+
+deploy-simulate:
+	@echo "🎭 Simulating full deployment process..."
+	python simulate_deployment.py --environment production --dry-run

@@ -63,6 +63,11 @@ jobs:
         # Override database for CI PostgreSQL
         echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/test_projectmeats" >> .env
 
+    - name: Validate deployment configuration
+      run: |
+        cd backend
+        python ../test_deployment.py --environment development --validate-only
+
     - name: Run Django system checks
       run: |
         cd backend
@@ -195,8 +200,9 @@ jobs:
 
     - name: Health Check
       run: |
-        sleep 30  # Wait for deployment to complete
-        curl -f https://projectmeats.app/api/v1/health/ || exit 1
+        pip install requests
+        sleep 60  # Wait for deployment to complete
+        python health_check.py https://projectmeats.app --verbose || exit 1
 
     - name: Notify Deployment Success
       if: success()

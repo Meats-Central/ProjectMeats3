@@ -1,8 +1,8 @@
 # Digital Ocean App Platform Configuration for ProjectMeats3
-# Industry-standard deployment configuration for Django REST + React TypeScript
+# Optimized deployment configuration for Django REST + React TypeScript
 name: projectmeats3
 
-# Database Configuration - Managed PostgreSQL
+# Managed PostgreSQL Database
 databases:
 - engine: PG
   name: projectmeats-db
@@ -10,14 +10,17 @@ databases:
   size: basic-xs
   version: "15"
 
-# Backend Service - Django REST API
+# Application Services
 services:
+# Django REST API Backend
 - name: api
   source_dir: /backend
   github:
     repo: Meats-Central/ProjectMeats3
     branch: main
     deploy_on_push: true
+  build_command: |
+    pip install -r requirements.txt
   run_command: |
     python manage.py migrate --noinput &&
     python manage.py collectstatic --noinput &&
@@ -28,6 +31,11 @@ services:
   http_port: 8080
   health_check:
     http_path: /api/v1/health/
+    initial_delay_seconds: 60
+    period_seconds: 10
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 3
   routes:
   - path: /api
   - path: /admin
@@ -45,13 +53,13 @@ services:
     value: "${projectmeats-db.DATABASE_URL}"
     type: SECRET
   - key: CORS_ALLOWED_ORIGINS
-    value: "https://${web.PRIVATE_IP},https://${APP_DOMAIN}"
+    value: "https://${APP_DOMAIN}"
     type: SECRET
   - key: DJANGO_SETTINGS_MODULE
     value: "projectmeats.settings.production"
     type: SECRET
 
-# Frontend Service - React TypeScript
+# React TypeScript Frontend
 - name: web
   source_dir: /frontend
   github:
@@ -59,9 +67,9 @@ services:
     branch: main
     deploy_on_push: true
   build_command: |
-    npm ci --only=production &&
+    npm ci --production=false &&
     npm run build
-  run_command: npx serve -s build -l 3000
+  run_command: npx serve -s build -l 3000 -d
   environment_slug: node-js
   instance_count: 1
   instance_size_slug: basic-xxs
@@ -75,20 +83,13 @@ services:
   - key: REACT_APP_API_BASE_URL
     value: "https://${APP_DOMAIN}/api/v1"
     type: SECRET
+  - key: REACT_APP_AI_ASSISTANT_ENABLED
+    value: "true"
+    type: SECRET
 
-# Static Files - Served by backend via WhiteNoise
-static_sites: []
-
-# Domain and SSL configuration
-domains:
-- domain: projectmeats.app
-  type: PRIMARY
-  zone: projectmeats.app
-  certificate_id: AUTO_GENERATED
-
-# Environment regions
+# Regional Deployment
 region: nyc
 
-# Features
+# Advanced Features
 features:
 - buildpack-stack
