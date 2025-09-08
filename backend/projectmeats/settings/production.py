@@ -10,7 +10,7 @@ import dj_database_url
 from .base import *
 
 # Security Settings
-SECRET_KEY = config("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY", default="temp-key-for-build-phase-only-not-secure")
 DEBUG = False
 
 ALLOWED_HOSTS = [
@@ -21,7 +21,7 @@ ALLOWED_HOSTS = [
 # Database Configuration - PostgreSQL via Digital Ocean managed database
 DATABASES = {
     "default": dj_database_url.config(
-        default=config("DATABASE_URL"),
+        default=config("DATABASE_URL", default="sqlite:///tmp/build_temp.db"),
         conn_max_age=600,
         conn_health_checks=True,
     )
