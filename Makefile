@@ -1,7 +1,7 @@
 # ProjectMeats Development Makefile
 # Provides essential development commands for Django + React application
 
-.PHONY: help setup dev test clean docs format lint env-dev env-staging env-prod env-validate env-secrets
+.PHONY: help setup dev test clean docs format lint env-dev env-staging env-prod env-validate env-secrets deploy-test deploy-check health-check deploy-simulate
 
 # Default target
 help:
@@ -42,6 +42,7 @@ help:
 	@echo "Deployment & Testing:"
 	@echo "  make deploy-test    - Test deployment configuration"
 	@echo "  make deploy-check   - Comprehensive deployment validation" 
+	@echo "  make deploy-simulate- Simulate full deployment process"
 	@echo "  make health-check   - Check live application health (requires URL)"
 	@echo ""
 	@echo "See README.md for complete documentation."
@@ -160,3 +161,7 @@ health-check:
 	else \
 		python health_check.py $(URL) --verbose; \
 	fi
+
+deploy-simulate:
+	@echo "🎭 Simulating full deployment process..."
+	python simulate_deployment.py --environment production --dry-run

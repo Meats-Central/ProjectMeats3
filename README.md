@@ -4,6 +4,8 @@ A business management application for meat sales brokers, migrated from PowerApp
 
 ## 🚀 Quick Start (5 Minutes)
 
+**📖 For deployment, see [USER_DEPLOYMENT_GUIDE.md](USER_DEPLOYMENT_GUIDE.md) - Simple 30-minute deployment checklist**
+
 **Prerequisites**: Python 3.9+, Node.js 16+
 
 ```bash
@@ -199,13 +201,19 @@ python config/manage_env.py generate-secrets
 
 **That's it!** The USER_DEPLOYMENT_GUIDE walks you through each step with a simple checklist format.
 
-### Deployment Testing
+### Deployment Testing & Validation
 ```bash
-# Test your deployment configuration
-python test_deployment.py --environment production
+# Test your deployment configuration before deploying
+make deploy-test
 
 # Run comprehensive deployment validation
-python test_deployment.py --environment production --full-test
+make deploy-check
+
+# Test a live deployment health
+make health-check URL=https://your-app.ondigitalocean.app
+
+# Simulate the full deployment process
+python simulate_deployment.py --environment production
 ```
 
 ## 📋 Business Entities (Migration Status)
@@ -229,6 +237,16 @@ make test-frontend     # React tests only
 ```
 
 **Coverage**: 95+ backend tests covering all business logic, API endpoints, and data models.
+
+## 🛠️ Deployment Tools
+
+This repository includes comprehensive deployment tools:
+
+- **[USER_DEPLOYMENT_GUIDE.md](USER_DEPLOYMENT_GUIDE.md)** - Step-by-step deployment checklist (30 minutes)
+- **[test_deployment.py](test_deployment.py)** - Automated deployment configuration validation
+- **[health_check.py](health_check.py)** - Live application health verification  
+- **[simulate_deployment.py](simulate_deployment.py)** - Full deployment process simulation
+- **Makefile commands** - `make deploy-test`, `make deploy-check`, `make health-check`
 
 ## 🛠️ Contributing
 
