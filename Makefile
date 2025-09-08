@@ -8,7 +8,7 @@ help:
 	@echo "ProjectMeats Development Commands"
 	@echo ""
 	@echo "Quick Start:"
-	@echo "  python setup.py - Complete setup (recommended)"
+	@echo "  python setup_env.py - Complete setup (recommended)"
 	@echo "  make dev        - Start development servers"
 	@echo ""
 	@echo "Development:"

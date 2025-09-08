@@ -10,7 +10,7 @@ A business management application for meat sales brokers, migrated from PowerApp
 
 ```bash
 # Option 1: Automated Setup (Recommended)
-python setup.py
+python setup_env.py
 
 # Option 2: Centralized Environment Configuration
 python config/manage_env.py setup development
@@ -72,7 +72,7 @@ make dev
 ### Alternative Setup (Legacy)
 ```bash
 # Use the legacy setup script
-python setup.py
+python setup_env.py
 ```
 
 ### Environment Configuration
@@ -100,7 +100,7 @@ git clone https://github.com/Meats-Central/ProjectMeats3.git
 cd ProjectMeats3
 
 # 2. Run setup (handles everything automatically)
-python setup.py
+python setup_env.py
 
 # 3. Start development servers
 make dev
@@ -142,7 +142,7 @@ ProjectMeats3/
 ├── backend/           # Django API with 9 business apps
 ├── frontend/          # React TypeScript application
 ├── Makefile          # Development commands
-└── setup.py          # Automated setup script
+├── setup_env.py        # Development environment setup script
 ```
 
 ### Essential Commands
@@ -173,7 +173,7 @@ make clean            # Clean artifacts
 
 **Authentication errors**: 
 ```bash
-python setup.py  # Recreates all configs
+python setup_env.py  # Recreates all configs
 ```
 
 **Module not found errors**:
