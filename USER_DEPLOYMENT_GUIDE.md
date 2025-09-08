@@ -120,6 +120,11 @@ These features enhance your deployment but are not required for basic functional
 
 ## 🚨 Troubleshooting
 
+**App Spec Upload Failed?**
+1. **"unknown field 'certificate_id'" error**: Use the latest `app.yaml` from the repository (recently fixed)
+2. **Parsing errors**: Ensure you're uploading the `app.yaml` file from the repository root
+3. **Validation failed**: Check that your Digital Ocean CLI is up to date
+
 **Build Failed?**
 1. Check build logs in Digital Ocean App dashboard
 2. Verify all environment variables are set
