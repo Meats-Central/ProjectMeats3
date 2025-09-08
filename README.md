@@ -1,264 +1,175 @@
 # ProjectMeats3
 
-A comprehensive business management application for meat sales brokers, migrated from PowerApps/Dataverse to a modern Django REST Framework (backend) and React TypeScript (frontend) stack. This system manages suppliers, customers, purchase orders, accounts receivables, and related business entities.
+A business management application for meat sales brokers, migrated from PowerApps to Django REST Framework (backend) and React TypeScript (frontend). Manages suppliers, customers, purchase orders, accounts receivables, and related business entities with an AI Assistant featuring Copilot-style UI and document processing.
 
-**Enhanced with AI Assistant**: Features intelligent chat interface with Copilot-style UI, document processing, and business intelligence capabilities.
+## 🚀 Quick Start (5 Minutes)
 
-## ⚠️ Quick Fix: "Authentication credentials were not provided"
-
-**Having authentication issues?** Run this one command:
+**Prerequisites**: Python 3.9+, Node.js 16+
 
 ```bash
-python setup_ai_assistant.py
-```
-
-This interactive wizard will configure everything needed including authentication, database, and AI features. See [QUICK_SETUP.md](QUICK_SETUP.md) for more details.
-
-## 🏗️ Technology Stack
-
-- **Backend**: Django 4.2.7 + Django REST Framework + PostgreSQL
-- **Frontend**: React 18.2.0 + TypeScript + Styled Components  
-- **AI Assistant**: OpenAI GPT-4 integration with modern Copilot-style interface
-- **Authentication**: Django User system with profile management
-- **API**: RESTful endpoints with OpenAPI documentation
-- **Testing**: 95+ comprehensive backend tests
-
-## 📁 Project Structure
-
-```
-ProjectMeats3/
-├── backend/                    # Django REST Framework API
-│   ├── apps/                  # Business entities (9 complete)
-│   │   ├── accounts_receivables/  # Customer payments
-│   │   ├── suppliers/            # Supplier management
-│   │   ├── customers/            # Customer relationships
-│   │   ├── purchase_orders/      # Order processing
-│   │   ├── plants/              # Processing facilities
-│   │   ├── contacts/            # Contact management
-│   │   └── core/                # Shared utilities
-│   └── requirements.txt
-├── frontend/                   # React TypeScript application
-│   ├── src/
-│   │   ├── components/         # Reusable UI components
-│   │   ├── screens/           # Main application screens
-│   │   └── services/         # API communication
-│   └── package.json
-├── docs/                      # Documentation
-└── powerapps_export/          # Original PowerApps solution
-```
-
-## 🚀 Quick Setup
-
-**Prerequisites**: Python 3.9+, Node.js 16+, Git
-
-### Option 1: Interactive AI Assistant Setup (Recommended)
-```bash
-# Clone repository
+# 1. Clone and enter directory
 git clone https://github.com/Meats-Central/ProjectMeats3.git
 cd ProjectMeats3
 
-# Run comprehensive AI assistant setup wizard
-python setup_ai_assistant.py
-```
-
-This guided setup will configure:
-- ✅ Backend authentication and database
-- ✅ AI provider credentials (OpenAI, Anthropic, Azure OpenAI)
-- ✅ Environment variables and secrets
-- ✅ Frontend integration
-- ✅ Database initialization
-
-### Option 2: Standard Setup
-```bash
-# Clone repository
-git clone https://github.com/Meats-Central/ProjectMeats3.git
-cd ProjectMeats3
-
-# Full setup (backend + frontend)
+# 2. Run setup (handles everything automatically)
 python setup.py
 
-# Configure AI assistant separately
-python setup_ai_assistant.py
-```
-
-### Option 3: Platform-Specific Setup
-
-**Windows Users:**
-```cmd
-setup_windows.bat
-```
-
-**Linux/macOS:**
-```bash
-make setup
-# or
-./setup.sh
-```
-
-### Manual Setup (Advanced Users)
-```bash
-# Backend only
-python setup.py --backend
-
-# Frontend only  
-python setup.py --frontend
-
-# AI assistant only
-python setup.py --ai-only
-```
-
-## 🔧 Development
-
-### Start Development Servers
-```bash
-# Start both servers (Linux/macOS)
+# 3. Start development servers
 make dev
-
-# Windows users - use separate terminals:
-# Terminal 1: cd backend && python manage.py runserver
-# Terminal 2: cd frontend && npm start
+# Windows: run backend and frontend in separate terminals
 ```
 
-### Access URLs
-- **Backend API**: http://localhost:8000
-- **Frontend**: http://localhost:3000  
-- **API Documentation**: http://localhost:8000/api/docs/
-- **Admin Panel**: http://localhost:8000/admin/
+**Access your application:**
+- **Frontend**: http://localhost:3000
+- **API Docs**: http://localhost:8000/api/docs/
+- **Admin Panel**: http://localhost:8000/admin/ (admin/WATERMELON1219)
+
+## 🔧 Development Guide
+
+### Technology Stack
+- **Backend**: Django 4.2.7 + REST Framework + SQLite/PostgreSQL
+- **Frontend**: React 18.2.0 + TypeScript + Styled Components
+- **AI Assistant**: OpenAI GPT-4 + Copilot-style interface
+- **Testing**: 95+ backend tests
+
+### Project Structure
+```
+ProjectMeats3/
+├── backend/           # Django API with 9 business apps
+├── frontend/          # React TypeScript application
+├── Makefile          # Development commands
+└── setup.py          # Automated setup script
+```
+
+### Essential Commands
+```bash
+# Development
+make dev              # Start both servers
+make backend          # Backend only
+make frontend         # Frontend only
+
+# Database
+make migrate          # Apply migrations
+make migrations       # Create migrations
+
+# Testing & Quality
+make test             # Run all tests
+make format           # Format code
+make lint             # Lint code
+make clean            # Clean artifacts
+```
 
 ### AI Assistant Features
-After running `python setup_ai_assistant.py`:
-- **Chat Interface**: Intelligent conversational AI for business operations with modern Copilot-style UI
-- **Document Processing**: Upload and analyze purchase orders, invoices, contracts via drag & drop
-- **Entity Extraction**: Automatic data extraction and database integration
-- **Business Intelligence**: Natural language queries about your data
+- **Chat Interface**: Natural language business queries
+- **Document Processing**: Drag & drop file upload and analysis
+- **Entity Extraction**: Automatic data extraction from documents
+- **Business Intelligence**: Performance metrics and analysis
+
+### Common Issues & Fixes
+
+**Authentication errors**: 
+```bash
+python setup.py  # Recreates all configs
+```
+
+**Module not found errors**:
+```bash
+cd backend && pip install -r requirements.txt
+cd frontend && npm install
+```
+
+**CORS errors**: Ensure both servers are running on correct ports (8000/3000)
+
+## 🚀 Production Deployment
+
+### Quick Production Setup (Digital Ocean App Platform)
+
+1. **Environment Variables**:
+```bash
+# Backend
+SECRET_KEY=your-production-secret-key
+DEBUG=False
+ALLOWED_HOSTS=your-domain.com
+DATABASE_URL=postgresql://user:pass@host:port/db
+CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
+
+# Frontend  
+REACT_APP_API_BASE_URL=https://your-backend-domain.com/api/v1
+```
+
+2. **Build Commands**:
+```yaml
+# Backend
+build_command: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate --noinput
+run_command: gunicorn --worker-tmp-dir /dev/shm projectmeats.wsgi
+
+# Frontend
+build_command: npm run build
+run_command: serve -s build
+```
+
+3. **Essential Production Tasks**:
+- [ ] Update SECRET_KEY and set DEBUG=False
+- [ ] Configure PostgreSQL database
+- [ ] Set up SSL/HTTPS certificates
+- [ ] Configure environment variables
+- [ ] Test all functionality
+- [ ] Set up monitoring and backups
+
+### Performance Optimizations
+- Database indexes on key fields
+- Query optimization with select_related()
+- Static file compression and CDN
+- Frontend code splitting and caching
+- Background task processing for AI features
+
+## 📋 Business Entities (Migration Status)
+
+**Completed** ✅:
+- **Accounts Receivables** - Customer payment tracking
+- **Suppliers** - Supplier management  
+- **Customers** - Customer relationships
+- **Purchase Orders** - Order processing
+- **Plants** - Processing facilities
+- **Contacts** - Contact management
+- **User Profiles** - Authentication system
+- **AI Assistant** - Document processing and chat
+
+## 🧪 Testing
+
+```bash
+make test              # All tests
+make test-backend      # Django tests only  
+make test-frontend     # React tests only
+```
+
+**Coverage**: 95+ backend tests covering all business logic, API endpoints, and data models.
+
+## 🛠️ Contributing
+
+1. **Setup**: Follow Quick Start guide above
+2. **Standards**: Use existing patterns from implemented entities
+3. **Testing**: Add tests for new functionality
+4. **Code Quality**: Run `make format` and `make lint` before commits
+
+## 📚 Reference
+
+### URLs
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8000
+- **API Documentation**: http://localhost:8000/api/docs/
+- **Admin Panel**: http://localhost:8000/admin/
 
 ### Default Credentials
 - **Username**: admin
 - **Password**: WATERMELON1219
 
-### Development Commands
-```bash
-make test          # Run all tests
-make migrate       # Run Django migrations
-make docs          # Generate API documentation
-make clean         # Clean build artifacts
-```
-
-## 🤖 AI Assistant Enhancements
-
-This version includes the latest AI Assistant improvements from PR #63:
-
-### Fixed Issues ✅
-- **HTTP 404 Errors**: Fixed API endpoint URLs (/ai-assistant/ai-chat/chat/)
-- **Intelligent Responses**: Enhanced with meat industry-specific AI responses
-- **Modern UI**: Complete Copilot-style interface with integrated file upload
-- **Drag & Drop**: Seamless document upload experience
-
-### New Features ✅
-- **Integrated File Upload**: Attachment button in message input
-- **Drag & Drop Support**: Drop files anywhere in chat area
-- **Visual Feedback**: Animations, loading states, error handling
-- **File Validation**: Support for PDF, images, documents with size limits
-- **Enhanced UX**: Professional error messages and user guidance
-
-## 📋 Migration Status
-
-**Completed Entities**:
-- ✅ **Accounts Receivables** - Customer payment tracking
-- ✅ **Suppliers** - Supplier management system  
-- ✅ **Customers** - Customer relationship management
-- ✅ **Purchase Orders** - Order processing workflow
-- ✅ **Plants** - Processing facility management
-- ✅ **Contacts** - Contact information system
-- ✅ **User Profiles** - Authentication and user management
-- ✅ **AI Assistant** - Intelligent chat with document processing
-
-*See [docs/migration_mapping.md](docs/migration_mapping.md) for detailed PowerApps → Django field mappings.*
-
-## 🧪 Testing
-
-```bash
-# Backend tests
-cd backend && python manage.py test
-
-# Frontend tests  
-cd frontend && npm test
-
-# Full test suite
-make test
-```
-
-**Test Status**: ✅ 95+ backend tests covering all business entities
-
-## 📚 Documentation
-
-### Quick Start Guides
-- **[QUICK_SETUP.md](QUICK_SETUP.md)** - Solve authentication issues in 5 minutes
-- **[AI Assistant Setup](docs/ai_assistant_setup.md)** - Complete AI configuration guide
-- **[Setup & Development Guide](docs/setup-and-development.md)** - Complete setup and development instructions
-
-### Technical Documentation  
-- **[API Reference](docs/api_reference.md)** - Complete API documentation  
-- **[Production Deployment](docs/production_deployment.md)** - Production deployment guide
-- **[Migration Mapping](docs/migration_mapping.md)** - PowerApps to Django mappings
-- **[Architecture Guide](docs/architecture.md)** - System architecture and design decisions
-
-## 🚀 Performance & Production
-
-### Recent Optimizations ✅
-- **Database indexes**: Strategic indexes for improved query performance
-- **Query optimization**: Reduced N+1 queries with `select_related()`
-- **Code quality**: Automated formatting and linting
-- **Security review**: Comprehensive security assessment
-- **AI Assistant**: Fixed API endpoints and enhanced UI performance
-
-### Production Deployment
-
-ProjectMeats3 includes an **interactive production deployment system** with guided setup optimized for Digital Ocean App Platform:
-
-```bash
-# Interactive production setup with server recommendations
-python deploy_production.py
-
-# Or quick server provider comparison
-python server_guide.py
-```
-
-**Features**:
-- 🎯 **Digital Ocean App Platform Ready**: Optimized configuration files
-- 🌟 **Interactive console prompts** for all configuration values
-- 🔧 **Automated configuration file generation**
-- 🚀 **One-command deployment**
-- 🔒 **Security best practices** (SSL, firewall, environment variables)
-- 📊 **Deployment verification** and health checks
-
-**Quick Setup**:
-1. Choose Digital Ocean App Platform (recommended) or other providers
-2. Run `python deploy_production.py` for guided configuration
-3. Upload configuration to Digital Ocean
-4. Access your production application with SSL/HTTPS
-
-See [docs/production_setup_guide.md](docs/production_setup_guide.md) for the complete deployment guide.
-
-## 👥 Contributing
-
-1. Follow the [Setup & Development Guide](docs/setup-and-development.md)
-2. Use existing patterns from implemented entities
-3. Add tests for new functionality
-4. Update documentation for changes
-
-**Code Standards**:
-- **Backend**: Django/DRF best practices, type hints, comprehensive tests
-- **Frontend**: React functional components with TypeScript
-- **AI Assistant**: Modern UI patterns following Microsoft Copilot design
-- **Documentation**: Clear inline comments for PowerApps migrations
+### AI Assistant Demo Commands
+- "Show me supplier performance metrics"
+- "Help me analyze purchase orders"
+- "Review customer order patterns" 
+- Upload documents via drag & drop
 
 ---
 
-**Need Help?** Check the [docs/](docs/) folder or create an issue for questions.
-
-## 🔄 Version History
-
-- **v3.0** - Enhanced AI Assistant with Copilot-style UI, fixed API endpoints, production-ready deployment
-- **v2.0** - Complete Django + React migration from PowerApps
-- **v1.0** - Original PowerApps solution
+**Need help?** Create an issue or check error messages - the setup script handles 99% of common problems automatically.
