@@ -21,7 +21,7 @@ services:
   instance_size_slug: basic-xxs
   http_port: 8080
   build_command: pip install -r requirements.txt
-  run_command: python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn --worker-tmp-dir /dev/shm --workers 2 --timeout 60 --bind 0.0.0.0:8080 projectmeats.wsgi:application
+  run_command: python manage.py migrate --noinput && python manage.py collectstatic --noinput && python -m gunicorn --worker-tmp-dir /dev/shm --workers 2 --timeout 60 --bind 0.0.0.0:8080 projectmeats.wsgi:application
   health_check:
     http_path: /api/v1/health/
     initial_delay_seconds: 60

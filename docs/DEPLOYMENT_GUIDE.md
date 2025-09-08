@@ -101,7 +101,7 @@ cd backend
 pip install -r requirements.txt
 python manage.py collectstatic --noinput
 python manage.py migrate
-gunicorn projectmeats.wsgi:application --bind 0.0.0.0:8000
+python -m gunicorn projectmeats.wsgi:application --bind 0.0.0.0:8000
 
 # Frontend deployment
 cd frontend
@@ -151,7 +151,7 @@ services:
   github:
     repo: Meats-Central/ProjectMeats3
     branch: main
-  run_command: gunicorn projectmeats.wsgi:application --bind 0.0.0.0:8000
+  run_command: python -m gunicorn projectmeats.wsgi:application --bind 0.0.0.0:8000
   environment_slug: python
   instance_count: 1
   instance_size_slug: basic-xxs
