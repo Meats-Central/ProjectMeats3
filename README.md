@@ -49,6 +49,44 @@ ProjectMeats3/
 
 ## 🚀 Quick Setup
 
+### Recommended Setup (Centralized Configuration)
+```bash
+# 1. Set up environment using centralized configuration
+python config/manage_env.py setup development
+
+# 2. Install dependencies  
+pip install -r backend/requirements.txt
+cd frontend && npm install && cd ..
+
+# 3. Run database migrations
+cd backend && python manage.py migrate && cd ..
+
+# 4. Start development servers
+make dev
+```
+
+### Alternative Setup (Legacy)
+```bash
+# Use the legacy setup script
+python setup.py
+```
+
+### Environment Configuration
+
+This project uses a **centralized environment configuration system** for better maintainability:
+
+- **📁 config/environments/** - Environment-specific configurations (dev/staging/prod)
+- **🔧 config/manage_env.py** - Environment management script
+- **📖 docs/ENVIRONMENT_GUIDE.md** - Complete configuration guide
+
+**Quick Commands:**
+```bash
+python config/manage_env.py setup development  # Set up dev environment
+python config/manage_env.py setup staging      # Set up staging environment  
+python config/manage_env.py setup production   # Set up production environment
+python config/manage_env.py validate           # Validate current configuration
+```
+
 **Prerequisites**: Python 3.9+, Node.js 16+, Git
 
 ### Option 1: Interactive AI Assistant Setup (Recommended)

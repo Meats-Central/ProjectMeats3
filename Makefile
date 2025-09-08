@@ -39,6 +39,12 @@ help:
 	@echo "Documentation:"
 	@echo "  make docs      - Generate API documentation"
 	@echo "  make clean     - Clean build artifacts"
+	@echo ""
+	@echo "Environment Management:"
+	@echo "  make env-dev   - Set up development environment"  
+	@echo "  make env-staging - Set up staging environment"
+	@echo "  make env-prod  - Set up production environment"
+	@echo "  make env-validate - Validate environment configuration"
 
 # Setup commands
 setup: setup-backend setup-frontend
@@ -115,3 +121,24 @@ clean:
 	find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
 	cd frontend && rm -rf build node_modules/.cache 2>/dev/null || true
 	@echo "✅ Cleanup complete!"
+
+# Environment management commands
+env-dev:
+	@echo "🔧 Setting up development environment..."
+	python config/manage_env.py setup development
+
+env-staging:
+	@echo "🔧 Setting up staging environment..."
+	python config/manage_env.py setup staging
+
+env-prod:
+	@echo "🔧 Setting up production environment..."
+	python config/manage_env.py setup production
+
+env-validate:
+	@echo "🔍 Validating environment configuration..."
+	python config/manage_env.py validate
+
+env-secrets:
+	@echo "🔐 Generating secure secrets..."
+	python config/manage_env.py generate-secrets

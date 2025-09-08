@@ -1,5 +1,29 @@
 # ProjectMeats3 AI Assistant - Quick Setup Reference
 
+## 🔄 New Centralized Configuration System
+
+**ProjectMeats now uses a centralized environment configuration system for better maintainability and deployment management.**
+
+### Quick Setup (Recommended)
+```bash
+# Set up development environment
+python config/manage_env.py setup development
+
+# Install dependencies
+pip install -r backend/requirements.txt
+cd frontend && npm install && cd ..
+
+# Start development servers
+make dev
+```
+
+### Alternative Setup (Legacy)
+```bash
+python setup.py
+```
+
+For complete configuration documentation, see: **[docs/ENVIRONMENT_GUIDE.md](docs/ENVIRONMENT_GUIDE.md)**
+
 ## 🚨 Solving "Authentication credentials were not provided"
 
 This error typically occurs when the AI Assistant backend isn't properly configured. Here's the **fastest solution**:
