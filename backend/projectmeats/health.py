@@ -9,13 +9,13 @@ from django.conf import settings
 from django.db import connection
 from django.http import JsonResponse
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
 
 
-@api_view(['GET'])
-@permission_classes([AllowAny])
+@require_http_methods(["GET"])
+@csrf_exempt
 def health_check(request):
     """
     Basic health check endpoint.
@@ -39,8 +39,8 @@ def health_check(request):
     })
 
 
-@api_view(['GET'])
-@permission_classes([AllowAny])
+@require_http_methods(["GET"])
+@csrf_exempt
 def health_detailed(request):
     """
     Detailed health check endpoint.
@@ -119,8 +119,8 @@ def health_detailed(request):
     }, status=status.HTTP_200_OK if overall_status == "healthy" else status.HTTP_503_SERVICE_UNAVAILABLE)
 
 
-@api_view(['GET'])
-@permission_classes([AllowAny])
+@require_http_methods(["GET"])
+@csrf_exempt
 def ready_check(request):
     """
     Readiness check endpoint.
