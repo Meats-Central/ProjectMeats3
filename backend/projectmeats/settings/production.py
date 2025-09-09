@@ -13,10 +13,38 @@ from .base import *
 SECRET_KEY = config("SECRET_KEY", default="temp-key-for-build-phase-only-not-secure")
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    config("ALLOWED_HOSTS", default="").split(",") if config("ALLOWED_HOSTS", default="") 
-    else []
-][0]
+# Parse ALLOWED_HOSTS from comma-separated string
+_allowed_hosts = config("ALLOWED_HOSTS", default="").split(",") if config("ALLOWED_HOSTS", default="") else []
+_allowed_hosts = [host.strip() for host in _allowed_hosts if host.strip()]
+
+# Add localhost and internal domain patterns for health checks
+_internal_hosts = [
+    'localhost',
+    '127.0.0.1',
+    '.internal',
+]
+
+# For containerized environments, we need to allow internal IP addresses
+# The specific pattern seen in logs is 10.244.45.4:8080
+# This suggests a Kubernetes pod network (10.244.x.x is common for pod networks)
+# Add support for the most common internal IP patterns
+_common_internal_patterns = [
+    '10.244.45.4',  # Specific IP from the error logs
+    '10.0.0.1',     # Common internal gateway
+    '172.17.0.1',   # Docker bridge network gateway
+    '192.168.1.1',  # Common private network gateway
+]
+
+# Parse additional internal hosts from environment (for platform-specific IPs)
+_additional_internal = config("INTERNAL_ALLOWED_HOSTS", default="").split(",") if config("INTERNAL_ALLOWED_HOSTS", default="") else []
+_additional_internal = [host.strip() for host in _additional_internal if host.strip()]
+
+ALLOWED_HOSTS = _allowed_hosts + _internal_hosts + _common_internal_patterns + _additional_internal
+
+# Alternative approach: Allow all hosts in DEBUG mode or when ALLOW_ALL_HOSTS is set
+# This is useful for development or when the proxy/load balancer handles security
+if config("ALLOW_ALL_HOSTS", default="false", cast=bool):
+    ALLOWED_HOSTS = ['*']
 
 # Database Configuration - PostgreSQL via Digital Ocean managed database
 DATABASES = {
