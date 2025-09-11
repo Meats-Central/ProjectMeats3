@@ -165,3 +165,27 @@ health-check:
 deploy-simulate:
 	@echo "🎭 Simulating full deployment process..."
 	python simulate_deployment.py --environment production --dry-run
+
+# Docker commands
+docker-build:
+	@echo "🐳 Building Docker images..."
+	docker-compose build
+
+docker-up:
+	@echo "🐳 Starting Docker containers..."
+	docker-compose up -d
+
+docker-down:
+	@echo "🐳 Stopping Docker containers..."
+	docker-compose down
+
+docker-logs:
+	@echo "🐳 Showing Docker logs..."
+	docker-compose logs -f
+
+# Pre-commit hooks
+pre-commit-install:
+	@echo "🪝 Installing pre-commit hooks..."
+	pip install pre-commit
+	pre-commit install
+	@echo "✅ Pre-commit hooks installed!"
