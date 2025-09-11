@@ -276,3 +276,6 @@ This repository includes comprehensive deployment tools:
 ---
 
 **Need help?** Create an issue or check error messages - the setup script handles 99% of common problems automatically.
+
+## GitHub Copilot Integration
+This repository includes `.github/copilot-instructions.md` for customized Copilot assistance. Use Copilot Workspace or Chat for tasks like generating code, fixing issues, or creating PRs. Assign issues to @copilot for automated help.
