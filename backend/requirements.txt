@@ -41,3 +41,7 @@ requests>=2.31.0  # For GitHub API integration in bug reports
 # Subscription & Licensing
 stripe>=10.11.0  # Stripe payment processing
 django-feature-flags>=1.2.0  # Feature flag management
+
+# Monitoring & Logging
+sentry-sdk>=2.16.0  # Error tracking and performance monitoring
+django-redis>=5.4.0  # Redis cache backend
