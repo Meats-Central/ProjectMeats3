@@ -147,6 +147,172 @@ These features enhance your deployment but are not required for basic functional
 
 ---
 
+---
+
+## 🏗️ Alternative: Infrastructure as Code (IaC) with Terraform
+
+For advanced users who want more control over their infrastructure, you can use Terraform to provision DigitalOcean Droplets and managed databases instead of using the App Platform approach above.
+
+### Why Use IaC with Terraform?
+
+**Benefits:**
+- **Full Control**: Manage VMs, databases, networking, and security
+- **Repeatability**: Recreate identical environments 
+- **Version Control**: Track infrastructure changes in Git
+- **Cost Optimization**: Fine-tune resource sizes and configurations
+- **Automation**: Integrate with CI/CD pipelines
+
+**Use Cases:**
+- Advanced networking requirements
+- Custom server configurations  
+- Multi-region deployments
+- Integration with existing infrastructure
+
+### Prerequisites for IaC Deployment ✅
+- [ ] DigitalOcean account with API access
+- [ ] Terraform installed (v1.0+)
+- [ ] SSH key added to DigitalOcean
+- [ ] Basic Terraform knowledge
+
+### IaC Deployment Steps
+
+#### Step 1: Install Terraform (5 minutes)
+```bash
+# Download and install Terraform
+# macOS
+brew tap hashicorp/tap
+brew install hashicorp/tap/terraform
+
+# Linux
+curl -fsSL https://releases.hashicorp.com/terraform/1.6.0/terraform_1.6.0_linux_amd64.zip -o terraform.zip
+unzip terraform.zip && sudo mv terraform /usr/local/bin/
+
+# Windows
+# Download from https://developer.hashicorp.com/terraform/downloads
+
+# Verify installation
+terraform version
+```
+
+#### Step 2: Configure DigitalOcean Access (5 minutes)
+- [ ] **Generate DigitalOcean API Token**: 
+  - Go to DigitalOcean Dashboard → API → Personal Access Tokens
+  - Create new token with **read/write** permissions
+- [ ] **Add SSH Key to DigitalOcean**:
+  - Go to DigitalOcean Dashboard → Settings → Security → SSH Keys
+  - Add your public SSH key and note the Key ID
+- [ ] **Set Environment Variables**:
+  ```bash
+  export TF_VAR_do_token="your-digitalocean-api-token"
+  export TF_VAR_ssh_key_id="your-ssh-key-id"
+  ```
+
+#### Step 3: Choose Your Environment (2 minutes)
+Navigate to the appropriate environment directory:
+```bash
+cd infrastructure/environments/dev     # Development environment
+cd infrastructure/environments/staging # Staging environment  
+cd infrastructure/environments/prod    # Production environment
+```
+
+#### Step 4: Deploy Infrastructure (10 minutes)
+```bash
+# Initialize Terraform
+terraform init
+
+# Preview changes
+terraform plan -var-file=dev.tfvars  # or staging.tfvars/prod.tfvars
+
+# Apply configuration
+terraform apply -var-file=dev.tfvars -auto-approve
+```
+
+#### Step 5: Configure Application (10 minutes)
+After Terraform completes, you'll get outputs with server details:
+```bash
+# Get server IP and database connection info
+terraform output
+
+# SSH to your server
+ssh root@<droplet-ip>
+
+# Configure database connection in /app/.env
+cd /app
+cat >> .env << EOF
+DATABASE_URL=postgresql://user:password@db-host:25060/meats_db?sslmode=require
+EOF
+
+# Start the application
+./start_app.sh
+```
+
+#### Step 6: Verify Deployment (5 minutes)
+- [ ] **Test Application**: Visit `http://<droplet-ip>:3000`
+- [ ] **Test API**: Visit `http://<droplet-ip>:8000/api/v1/health/`
+- [ ] **Test Admin**: Visit `http://<droplet-ip>:8000/admin/`
+
+### IaC Environment Configurations
+
+| Environment | Droplet Size | Database | Use Case |
+|-------------|--------------|-----------|-----------|
+| **Development** | 1 vCPU, 1GB RAM | Single node | Testing, development |
+| **Staging** | 1 vCPU, 2GB RAM | Single node | Pre-production testing |
+| **Production** | 2 vCPU, 4GB RAM | 2-node cluster | Production workloads |
+
+### IaC Management Commands
+
+```bash
+# View current state
+terraform show
+
+# Update infrastructure
+terraform plan -var-file=<env>.tfvars
+terraform apply -var-file=<env>.tfvars
+
+# Destroy infrastructure (be careful!)
+terraform destroy -var-file=<env>.tfvars
+
+# Get outputs
+terraform output
+terraform output -json
+```
+
+### IaC vs App Platform Comparison
+
+| Feature | IaC (Terraform) | App Platform |
+|---------|------------------|---------------|
+| **Complexity** | Advanced | Simple |
+| **Control** | Full control | Managed service |
+| **Setup Time** | 30-45 minutes | 15-30 minutes |
+| **Maintenance** | Manual updates | Auto-managed |
+| **Cost** | $20-35/month | $20-27/month |
+| **Scalability** | Manual scaling | Auto-scaling |
+| **Best For** | Custom requirements | Quick deployment |
+
+### Troubleshooting IaC Deployment
+
+**Terraform Init Failed?**
+1. Check internet connection and Terraform installation
+2. Verify DigitalOcean provider accessibility
+
+**Plan/Apply Failed?**
+1. Verify API token has correct permissions
+2. Check SSH key exists in DigitalOcean account
+3. Ensure environment variables are set correctly
+
+**Application Won't Start?**
+1. SSH to droplet and check `/var/log/cloud-init.log`
+2. Verify database connection string in `/app/.env`
+3. Check Docker services: `docker-compose ps`
+
+**Need to Clean Up?**
+```bash
+# Destroy all resources (careful!)
+terraform destroy -var-file=<env>.tfvars -auto-approve
+```
+
+---
+
 ## 💰 Cost Estimate
 - **Basic App**: $5-12/month (suitable for development and light usage)
 - **Managed Database**: $15/month (PostgreSQL with backups)

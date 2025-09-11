@@ -91,6 +91,13 @@ temp/
 *.csr
 secrets/
 
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+*.tfvars
+
 # Documentation builds
 docs/_build/
 site/

@@ -201,6 +201,16 @@ python config/manage_env.py generate-secrets
 
 **That's it!** The USER_DEPLOYMENT_GUIDE walks you through each step with a simple checklist format.
 
+## 🏗️ Infrastructure as Code (IaC)
+
+For advanced users who want more control over their infrastructure, this project includes Terraform configurations to provision DigitalOcean resources:
+
+- **Droplets (VMs)**: Automatically configured Ubuntu servers
+- **Managed PostgreSQL**: Highly available database clusters  
+- **Environment Management**: Separate dev/staging/prod configurations
+
+Use Terraform in `infrastructure/` to provision DigitalOcean resources. See USER_DEPLOYMENT_GUIDE.md for detailed IaC instructions.
+
 ### Deployment Testing & Validation
 ```bash
 # Test your deployment configuration before deploying
