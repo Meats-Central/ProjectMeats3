@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from django.db import models
 
-from apps.core.models import OwnedModel, StatusModel
+from apps.core.models import OwnedModel, StatusModel, TenantOwnedModel
 
 
 class ChatSessionStatusChoices(models.TextChoices):
@@ -21,7 +21,7 @@ class ChatSessionStatusChoices(models.TextChoices):
     ARCHIVED = "archived", "Archived"
 
 
-class ChatSession(OwnedModel, StatusModel):
+class ChatSession(TenantOwnedModel, StatusModel):
     """Chat session model for managing conversations with the AI assistant."""
     
     id = models.UUIDField(
@@ -73,7 +73,7 @@ class MessageTypeChoices(models.TextChoices):
     DOCUMENT = "document", "Document Upload"
 
 
-class ChatMessage(OwnedModel):
+class ChatMessage(TenantOwnedModel):
     """Individual chat message within a session."""
     
     id = models.UUIDField(
